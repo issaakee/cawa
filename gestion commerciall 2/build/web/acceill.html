@@ -1,0 +1,137 @@
+
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <style>
+            .container{
+                display: grid ;
+                grid-template-columns: 150px 1050px;
+                grid-auto-rows: 70px 500px;
+                grid-row-gap : 4px;
+                grid-column-gap: 4px;
+            }
+            
+            .box{
+                
+            }
+                
+            .item2 {
+                background-color: cornflowerblue;
+                grid-column-start:1;
+                grid-column-end:2;
+                grid-row-start:1;
+                grid-row-end:3;
+                text-align: center;
+                padding-top: 70px;
+                display: flex;
+                flex-direction: column;
+                border: 1px solid white;
+            }
+            
+            .item2 a {
+                margin-top:  40px;
+            }
+            
+            .item1 {
+                background-color: chocolate;
+                grid-column-start:2;
+                grid-column-end:3;
+                height: 50px;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+                padding: 10px;
+                border: 1px solid white;
+            }
+            
+            .item1 a:not(:last-child) {
+                margin-right: 5px;
+            }
+            
+            .item1 .link.active {
+                border: 2px solid white;
+                border-radius: 5px;
+                animation: borderAnimation 0.5s ease;
+            }
+
+            @keyframes borderAnimation {
+                0% {
+                    transform: scale(1);
+                }
+                50% {
+                    transform: scale(1.2);
+                }
+                100% {
+                    transform: scale(1);
+                }
+            }
+            
+            .item3 {
+                background-color: azure;
+                grid-column-start:2;
+                grid-column-end:3;
+                margin-top:3px;
+                overflow: auto;
+            }
+        </style>
+       
+        <script>
+            function chargerContenu(page) {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        document.getElementById("content").innerHTML = this.responseText;
+                    }
+                };
+                xhttp.open("GET", page + ".html", true);
+                xhttp.send();
+            }
+        </script>
+        <script>
+            function chargerContenuServlet(servlet) {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        document.querySelector('.item3').innerHTML = this.responseText;
+                    }
+                };
+                xhttp.open("GET", servlet, true);
+                xhttp.send();
+
+                // Ajouter la classe active au lien cliqué
+                var links = document.querySelectorAll('.item1 .link');
+                links.forEach(function(link) {
+                    link.classList.remove('active');
+                });
+                event.target.classList.add('active');
+            }
+        </script>
+     
+    
+        
+    </head>
+    <body>
+        <div class="container">
+            <div class="box item1">
+                <a href="#" style="color: white;" onclick="chargerContenuServlet('ClientsServlet')" class="link">clients</a>
+                <a>|</a>
+                <a href="#" style="color: white;" onclick="chargerContenuServlet('ArticlesServlet')" class="link">articles</a>
+                <a>|</a>
+                <a href="#" style="color: white;" onclick="chargerContenuServlet('FacturesServlet')" class="link">factures</a>
+                <a href="#" style="color: white;">se deconecter</a>
+            </div>
+            <div class="box item2">
+                <a href="#" style="color: white;" onclick="chargerContenu('ajouterClient')">ajouter client</a>
+                <a href="#" style="color: white;" onclick="chargerContenu('ajouterArticle')">ajouter article</a>
+                <a href="#" style="color: white;" onclick="chargerContenu('ajouterFacturee')">ajouter facture</a>
+            </div>
+            <div class="box item3" id="content">
+            
+            </div>
+        </div>
+    </body>
+</html>
